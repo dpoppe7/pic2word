@@ -27,5 +27,8 @@
   },
   "triggers": {
     "onAppInstall": "/internal/on-app-install"
+  },
+  "dev": {
+    "subreddit": "pic2word_dev"
   }
 }
