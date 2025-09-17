@@ -3,7 +3,7 @@ import { navigateTo } from '@devvit/web/client';
 import { useGame } from './hooks/useGame';
 
 export const App = () => {
-  const { userStats, userInfo } = useGame();
+  const { userStats, userInfo, gameState } = useGame();
 
   //const { count, username, loading, increment, decrement } = useCounter();
   return (
@@ -23,7 +23,7 @@ export const App = () => {
       <div className="flex items-center justify-center mt-5">
         <button
           className="flex items-center justify-center bg-[#d93900] text-white w-14 h-14 text-[2.5em] rounded-full cursor-pointer font-mono leading-none transition-colors"
-          onClick={ () => console.log ('game btn clicked')}
+          onClick={ () => console.log ('Current game:', gameState.currentChallenge.hint)}
         >
           🎮
         </button>

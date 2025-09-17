@@ -2,7 +2,7 @@
 // functions that use built-in hooks (like useSate, useEffect)
 // to encapsulate and reuse stateful logic across components.
 import { useState, useEffect } from "react";
-import { UserStats, UserInfo } from "../types";
+import { UserStats, UserInfo, GameState } from "../types";
 
 export const useGame = () => {
     const [userStats, setUserStats] = useState<UserStats>({
@@ -36,9 +36,18 @@ export const useGame = () => {
         };
         void fetchUserInfo();
     }, []);
+
+    const [gameState, setGameState] = useState<GameState>({
+        currentChallenge: { id: 1, answer: "ANSWER", images: [], hint: "This is a hint"},
+        userAnswer: "",
+        selectedLetters: [],
+        gameWon: false,
+        showHint: false,
+    });
     
     return {
         userStats,
-        userInfo
+        userInfo,
+        gameState
     };
 };
