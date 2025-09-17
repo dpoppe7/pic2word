@@ -3,6 +3,7 @@
 // to encapsulate and reuse stateful logic across components.
 import { useState, useEffect } from "react";
 import { UserStats, UserInfo, GameState } from "../types";
+import { CHALLENGES } from "../data";
 
 export const useGame = () => {
     const [userStats, setUserStats] = useState<UserStats>({
@@ -38,16 +39,25 @@ export const useGame = () => {
     }, []);
 
     const [gameState, setGameState] = useState<GameState>({
-        currentChallenge: { id: 1, answer: "ANSWER", images: [], hint: "This is a hint"},
+        currentChallenge: CHALLENGES[0] || {id: 0, answer: "ERROR", images: [], hint: "No challenges found"},
         userAnswer: "",
         selectedLetters: [],
         gameWon: false,
         showHint: false,
     });
+
+    //function to add letters
+    const addLetter = (letter: string) => {
+        setGameState(prev => ({ //"take the previous state"
+            ...prev, //"keep everything else the same"
+            userAnswer: prev.userAnswer + letter
+        }))
+    }
     
     return {
         userStats,
         userInfo,
-        gameState
+        gameState,
+        addLetter
     };
 };
