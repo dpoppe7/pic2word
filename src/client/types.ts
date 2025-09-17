@@ -15,10 +15,15 @@ export interface UserStats {
     diamonds: number;
 }
 
+export interface UserInfo {
+  username: string | null;
+  loading: boolean;
+}
+
 export interface GameState {
     currentChallenge: Challenge;
     userAnswer: string;
-    selectedLetterd: number[];
+    selectedLetters: number[];
     gameWon: boolean;
     showHint: boolean;
 }
