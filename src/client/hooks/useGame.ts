@@ -70,12 +70,31 @@ export const useGame = () => {
             console.log("Incorrect andser");
         }
     }
+
+    const resetGame = () => {
+        setGameState(prev => ({
+            ...prev,
+            userAnswer: "",
+            selectedLetters: [],
+            gameWon: false,
+            showHint: false
+        }));
+    };
+
+    const deleteLetter = () => {
+        setGameState(prev => ({
+            ...prev,
+            userAnswer: prev.userAnswer.slice(0, -1) //removes las character
+        }));
+    };
     
     return {
         userStats,
         userInfo,
         gameState,
         addLetter,
-        checkAnswer
+        checkAnswer,
+        resetGame,
+        deleteLetter
     };
 };

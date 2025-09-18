@@ -4,7 +4,7 @@ import { useGame } from './hooks/useGame';
 import { GAME_CONFIG } from './data';
 
 export const App = () => {
-  const { userStats, userInfo, gameState, addLetter, checkAnswer } = useGame();
+  const { userStats, userInfo, gameState, addLetter, checkAnswer, resetGame, deleteLetter } = useGame();
 
   //const { count, username, loading, increment, decrement } = useCounter();
   return (
@@ -50,6 +50,16 @@ export const App = () => {
           </div>
       </div>
 
+       {/* buttons */}
+      <div>
+        <button
+          onClick={deleteLetter}
+          className="mt-4 mr-2 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl"
+        >
+          Delete
+        </button>
+      </div>
+      
       <div>
         <button
           onClick={checkAnswer}
@@ -59,11 +69,20 @@ export const App = () => {
         </button>
       </div>
 
+      
+
       {/* Win */}
       {gameState.gameWon && (
         <div className="mt-6 bg-green-500 text-white p-4 rounded-xl text-center">
           <h2 className="text-2xl font-bold">🎉 Correct!</h2>
           <p>You earned {GAME_CONFIG.DIAMONDS_PER_WIN} diamonds and {GAME_CONFIG.POINTS_PER_WIN} points!</p>
+        
+          <button
+            onClick={resetGame}
+            className="mt-3 bg-white text-green-500 font-bold py-2 px-4 rounded hover:bg-gray-100"
+          >
+            Play Again
+          </button>
         </div>
       )}
 
