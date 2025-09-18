@@ -1,6 +1,7 @@
 import { navigateTo } from '@devvit/web/client';
 //import { useCounter } from './hooks/useCounter';
 import { useGame } from './hooks/useGame';
+import { GAME_CONFIG } from './data';
 
 export const App = () => {
   const { userStats, userInfo, gameState, addLetter, checkAnswer } = useGame();
@@ -57,6 +58,15 @@ export const App = () => {
           Submit Answer
         </button>
       </div>
+
+      {/* Win */}
+      {gameState.gameWon && (
+        <div className="mt-6 bg-green-500 text-white p-4 rounded-xl text-center">
+          <h2 className="text-2xl font-bold">🎉 Correct!</h2>
+          <p>You earned {GAME_CONFIG.DIAMONDS_PER_WIN} diamonds and {GAME_CONFIG.POINTS_PER_WIN} points!</p>
+        </div>
+      )}
+
 
       <footer className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 text-[0.8em] text-gray-600">
         <button
