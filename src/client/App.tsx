@@ -30,9 +30,24 @@ export const App = () => {
         </div>
       </div>
 
-      <span className="text-[1.8em] font-medium mx-5 min-w-[50px] text-center leading-none text-gray-900">
-        Answer: "{gameState.userAnswer}" | 💎 {userStats.diamonds}
-      </span>
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex space-x-2">
+          {Array.from({ length: gameState.currentChallenge.answer.length }).map((_, index) => (
+            <div 
+              key={index} 
+              className="w-12 h-12 border-2 border-blue-400 rounded-lg flex items-center justify-center bg-white/10"
+            >
+              <span className="text-blue-900 text-xl font-bold">
+                {gameState.userAnswer[index] || ''}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center space-x-4">
+          <span className="text-cyan-300">💎 {userStats.diamonds}</span>
+          <span className="text-yellow-300">🏆 {userStats.score}</span>
+        </div>
+      </div>
        
       {/* letters */}
       <div className="mt-8">
