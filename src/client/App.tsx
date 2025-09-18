@@ -3,7 +3,7 @@ import { navigateTo } from '@devvit/web/client';
 import { useGame } from './hooks/useGame';
 
 export const App = () => {
-  const { userStats, userInfo, gameState, addLetter } = useGame();
+  const { userStats, userInfo, gameState, addLetter, checkAnswer } = useGame();
 
   //const { count, username, loading, increment, decrement } = useCounter();
   return (
@@ -29,25 +29,10 @@ export const App = () => {
         </div>
       </div>
 
-
-      <div className="flex items-center justify-center mt-5">
-        <button
-          className="flex items-center justify-center bg-[#d93900] text-white w-14 h-14 text-[2.5em] rounded-full cursor-pointer font-mono leading-none transition-colors"
-          onClick={ () => addLetter('B')}
-        >
-          🎮
-        </button>
-        <span className="text-[1.8em] font-medium mx-5 min-w-[50px] text-center leading-none text-gray-900">
-          Answer: "{gameState.userAnswer}" | 💎 {userStats.diamonds}
-        </span>
-        <button
-          className="flex items-center justify-center bg-[#d93900] text-white w-14 h-14 text-[2.5em] rounded-full cursor-pointer font-mono leading-none transition-colors"
-          onClick={() => console.log('Stats button clicked!')}
-        >
-          📊
-        </button>
-      </div>
-
+      <span className="text-[1.8em] font-medium mx-5 min-w-[50px] text-center leading-none text-gray-900">
+        Answer: "{gameState.userAnswer}" | 💎 {userStats.diamonds}
+      </span>
+       
       {/* letters */}
       <div className="mt-8">
           <h3 className="text-white text-center">Available Letters:</h3>
@@ -62,6 +47,15 @@ export const App = () => {
               </button>
             ))}
           </div>
+      </div>
+
+      <div>
+        <button
+          onClick={checkAnswer}
+          className='mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl'
+        >
+          Submit Answer
+        </button>
       </div>
 
       <footer className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 text-[0.8em] text-gray-600">
