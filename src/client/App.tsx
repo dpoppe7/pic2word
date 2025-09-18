@@ -13,13 +13,23 @@ export const App = () => {
         <h1 className="text-2xl font-bold text-center text-gray-900 ">
           {userInfo.username ? `Hey ${userInfo.username} 👋` : ''}
         </h1>
-        <p className="text-base text-center text-gray-600 ">
-          Edit <span className="bg-[#e5ebee]  px-1 py-0.5 rounded">src/client/App.tsx</span> to get
-          started.
-        </p>
       </div>
 
-     
+      {/* Answer */}
+      <div className="flex items-center justify-center mt-5">
+        <div className='flex space-x-2'>
+          {Array.from({ length: gameState.currentChallenge.answer.length }).map((_, index) => (
+            <div
+              key={index}
+              className='w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center bg-white/10 backdrop-blur-md'
+            >
+
+            </div>
+          ))}
+        </div>
+      </div>
+
+
       <div className="flex items-center justify-center mt-5">
         <button
           className="flex items-center justify-center bg-[#d93900] text-white w-14 h-14 text-[2.5em] rounded-full cursor-pointer font-mono leading-none transition-colors"
@@ -36,6 +46,22 @@ export const App = () => {
         >
           📊
         </button>
+      </div>
+
+      {/* letters */}
+      <div className="mt-8">
+          <h3 className="text-white text-center">Available Letters:</h3>
+          <div className="grid grid-cols-4 gap-2 max-w-xs mx-auto">
+            {gameState.currentChallenge.letters.map((letter, index) => (
+              <button
+                key={index}
+                onClick={() => addLetter(letter)}
+                className="bg-white text-gray-800 font-bold py-2 px-4 rounded hover:bg-gray-200"
+              >
+                {letter}
+              </button>
+            ))}
+          </div>
       </div>
 
       <footer className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 text-[0.8em] text-gray-600">

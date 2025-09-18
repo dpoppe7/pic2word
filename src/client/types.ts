@@ -8,6 +8,7 @@ export interface Challenge {
     answer: string;
     images: string[];
     hint: string;
+    letters: string[];
 }
 
 export interface UserStats {

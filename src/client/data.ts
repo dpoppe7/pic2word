@@ -11,7 +11,8 @@ export const CHALLENGES : Challenge[] = [
             "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=300&h=300&fit=crop",
             "https://images.unsplash.com/photo-1544336527-5bd1d45aef1e?w=300&h=300&fit=crop"
         ],
-        hint: "A sandy place by the water"
+        hint: "A sandy place by the water",
+        letters: ['B', 'E', 'A', 'C', 'H', 'S', 'U', 'N', 'D', 'O', 'W', 'T']
     }
 ];
 

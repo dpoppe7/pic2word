@@ -3,7 +3,7 @@
 // to encapsulate and reuse stateful logic across components.
 import { useState, useEffect } from "react";
 import { UserStats, UserInfo, GameState } from "../types";
-import { CHALLENGES } from "../data";
+import { CHALLENGES, GAME_CONFIG } from "../data";
 
 export const useGame = () => {
     const [userStats, setUserStats] = useState<UserStats>({
@@ -39,7 +39,7 @@ export const useGame = () => {
     }, []);
 
     const [gameState, setGameState] = useState<GameState>({
-        currentChallenge: CHALLENGES[0] || {id: 0, answer: "ERROR", images: [], hint: "No challenges found"},
+        currentChallenge: CHALLENGES[0] || {id: 0, answer: "ERROR", images: [], hint: "No challenges found", letters: []},
         userAnswer: "",
         selectedLetters: [],
         gameWon: false,
@@ -53,11 +53,29 @@ export const useGame = () => {
             userAnswer: prev.userAnswer + letter
         }))
     }
+
+    const checkAnswer = () => {
+        if (gameState.userAnswer == gameState.currentChallenge.answer) {
+            setUserStats(prev => ({
+                ...prev,
+                score: prev.score + GAME_CONFIG.POINTS_PER_WIN,
+                diamonds: prev.diamonds + GAME_CONFIG.DIAMONDS_PER_WIN
+            }));
+            setGameState(prev => ({
+                ...prev,
+                gameWon: true
+            }))
+        }
+        else {
+            console.log("Incorrect andser");
+        }
+    }
     
     return {
         userStats,
         userInfo,
         gameState,
-        addLetter
+        addLetter,
+        checkAnswer
     };
 };
