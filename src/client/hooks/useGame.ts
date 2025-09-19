@@ -148,6 +148,7 @@ export const useGame = () => {
     deleteLetter,
     buyHint,
     hasPlayedToday,
-    loadDailyChallenge
+    loadDailyChallenge,
+    setUserStats
   };
 };

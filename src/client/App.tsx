@@ -14,11 +14,19 @@ export const App = () => {
     deleteLetter,
     buyHint,
     hasPlayedToday,
-    loadDailyChallenge
+    loadDailyChallenge,
+    setUserStats
   } = useGame();
   
   const [currentScreen, setCurrentScreen] = useState<Screen>('menu');
-
+  const [createWord, setCreateWord] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedPuzzle, setGeneratedPuzzle] = useState<{
+      word: string;
+    images: string[];
+    hint: string;
+  } | null>(null);
+    
   // Get today's date for display
   const getTodayString = () => {
     const today = new Date();
@@ -227,10 +235,44 @@ export const App = () => {
     );
   }
 
-  // Create Screen (placeholder for now)
+  // Create Screen 
   if (currentScreen === 'create') {
+    const handleWordInput = (word: string) => {
+      setCreateWord(word.toUpperCase().slice(0, 8)); // Max 8 letters
+    };
+
+    const generatePuzzle = async () => {
+      if (createWord.length < 3) return;
+      
+      setIsGenerating(true);
+      
+      // Simulate puzzle generation ( real API later)
+      setTimeout(() => {
+        const puzzle = {
+          word: createWord,
+          images: [
+            `https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&h=300&fit=crop&q=80&txt=${createWord}`,
+            `https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=300&fit=crop&q=80&txt=${createWord}`,
+            `https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=300&h=300&fit=crop&q=80&txt=${createWord}`,
+            `https://images.unsplash.com/photo-1544336527-5bd1d45aef1e?w=300&h=300&fit=crop&q=80&txt=${createWord}`
+          ],
+          hint: `Think about what connects to "${createWord.toLowerCase()}"`
+        };
+        setGeneratedPuzzle(puzzle);
+        setIsGenerating(false);
+      }, 2000);
+    };
+
+    const publishPuzzle = () => {
+      // This would post to Reddit in production
+      alert(`Puzzle "${createWord}" would be posted to Reddit!`);
+      setUserStats(prev => ({ ...prev, diamonds: prev.diamonds + 5 })); // Reward for creating
+      setCreateWord('');
+      setGeneratedPuzzle(null);
+    };
+
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-600 to-purple-800 flex flex-col justify-center items-center">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-600 to-purple-800">
         <button 
           onClick={() => setCurrentScreen('menu')}
           className="absolute top-4 left-4 bg-white/20 backdrop-blur-md hover:bg-white/30 p-3 rounded-xl text-white font-bold"
@@ -238,10 +280,103 @@ export const App = () => {
           ← Menu
         </button>
         
-        <div className="text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">Create Puzzle</h2>
-          <p className="text-purple-200 text-xl">Coming Soon!</p>
-          <p className="text-purple-300 mt-4">Create puzzles that post to r/pic2word</p>
+        <div className="pt-20 px-6 max-w-md mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-bold text-white mb-2">Create Puzzle</h2>
+            <p className="text-purple-200">Share your puzzle with the community</p>
+          </div>
+
+          {/* Word Input */}
+          <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-6">
+            <label className="block text-white font-bold mb-4">Enter your word:</label>
+            <input
+              type="text"
+              value={createWord}
+              onChange={(e) => handleWordInput(e.target.value)}
+              placeholder="Type a word..."
+              className="w-full p-4 rounded-lg text-center text-2xl font-bold uppercase bg-white text-gray-800 placeholder-gray-400"
+              maxLength={8}
+            />
+            <p className="text-purple-200 text-sm mt-2">3-8 letters only</p>
+          </div>
+
+          {/* Generate Button */}
+          {createWord.length >= 3 && !generatedPuzzle && (
+            <button
+              onClick={generatePuzzle}
+              disabled={isGenerating}
+              className={`w-full font-bold py-4 px-6 rounded-xl text-lg mb-6 ${
+                isGenerating 
+                  ? 'bg-gray-500 text-gray-300' 
+                  : 'bg-blue-500 hover:bg-blue-600 text-white'
+              }`}
+            >
+              {isGenerating ? 'Generating Images...' : '🎨 Generate Images'}
+            </button>
+          )}
+
+          {/* Generated Puzzle Preview */}
+          {generatedPuzzle && (
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-6">
+              <h3 className="text-white font-bold mb-4 text-center">Your Puzzle Preview</h3>
+              
+              {/* Images Grid */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                {generatedPuzzle.images.map((image: string, index: number) => (
+                  <div key={index} className="aspect-square rounded-lg overflow-hidden bg-white/20">
+                    <img 
+                      src={image} 
+                      alt={`Generated ${index + 1}`} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Answer Preview */}
+              <div className="flex justify-center mb-4">
+                <div className="flex space-x-1">
+                  {generatedPuzzle.word.split('').map((_: string, index: number) => (
+                    <div 
+                      key={index} 
+                      className="w-8 h-8 border border-white rounded flex items-center justify-center bg-white/20"
+                    >
+                      <span className="text-white text-sm font-bold">_</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <p className="text-purple-200 text-center mb-4">"{generatedPuzzle.hint}"</p>
+
+              {/* Publish Button */}
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setGeneratedPuzzle(null)}
+                  className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 rounded-xl"
+                >
+                  Regenerate
+                </button>
+                <button
+                  onClick={publishPuzzle}
+                  className="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl"
+                >
+                  📤 Publish (+5💎)
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Instructions */}
+          <div className="bg-white/5 rounded-xl p-4">
+            <h4 className="text-white font-bold mb-2">How it works:</h4>
+            <ul className="text-purple-200 text-sm space-y-1">
+              <li>• Enter any word (3-8 letters)</li>
+              <li>• AI generates 4 related images</li>
+              <li>• Your puzzle gets posted to Reddit</li>
+              <li>• Earn 5 diamonds when published!</li>
+            </ul>
+          </div>
         </div>
       </div>
     );
