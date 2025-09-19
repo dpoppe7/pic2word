@@ -1,7 +1,7 @@
 // types are like blueprints or contracts. Types define what shape the data should have
 // Types prevent bugs by ensuring data has the right structure
 
-export type Screen = 'menu' | 'game' | 'leaderboard' | 'tutorial';
+export type Screen = 'menu' | 'game' | 'leaderboard' | 'tutorial' | 'create';
 
 export interface Challenge {
     id: number;
